@@ -8,6 +8,7 @@ import numpy as np
 from numpy._typing import NDArray
 
 WORLD_SIZE = 50
+TICK_SECONDS = 0.05
 
 # World methods
 
@@ -66,19 +67,19 @@ def resolveCell(
         # North
         if coords[0] > 0:
             neighbour = (coords[0] - 1, coords[1])
-            actions.append((neighbour, 1.0))
+            actions.append((neighbour, randBoundedInt((0, 1))))
         # South
         if coords[0] < WORLD_SIZE - 1:
             neighbour = (coords[0] + 1, coords[1])
-            actions.append((neighbour, 1.0))
+            actions.append((neighbour, randBoundedInt((0, 1))))
         # East
         if coords[1] < WORLD_SIZE - 1:
             neighbour = (coords[0], coords[1] + 1)
-            actions.append((neighbour, 1.0))
+            actions.append((neighbour, randBoundedInt((0, 1))))
         # West
         if coords[1] > 0:
             neighbour = (coords[0], coords[1] - 1)
-            actions.append((neighbour, 1.0))
+            actions.append((neighbour, randBoundedInt((0, 1))))
         # Clear self
         selfCoords = (coords[0], coords[1])
         actions.append((selfCoords, 0.0))
@@ -113,7 +114,7 @@ def loop(world: NDArray[np.float64]) -> None:
         actions = getActions(world)
         resolveWorld(world, actions)
         renderWorld(world)
-        sleep(0.2)
+        sleep(TICK_SECONDS)
         clearTTY()
 
 
